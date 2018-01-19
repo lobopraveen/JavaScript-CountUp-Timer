@@ -23,22 +23,23 @@
 #
 **********************************************************************************************/
 
-function Counter(initDate, id, msg){
-  this.beginDate = new Date(initDate);
+function CountUpUnits(initDate, id){
+  this.counterDate = new Date(initDate);
   this.secDiff = 0, this.seconds = 0, this.minutes = 0, this.hours = 0;
   this.days = 0, this.weeks = 0, this.months = 0, this.years = 0;
-  document.getElementById(id).title = msg;
-  this.calculate(id);
+  this.countainer = document.getElementById(id);
+  this.countainer.title = initDate;
+  this.updateCounter();
 }
 
-Counter.prototype.calculateUnits=function(valuePerUnit){
+CountUpUnits.prototype.calculateUnits=function(valuePerUnit){
   var tmp = this.secDiff/valuePerUnit;
   tmp = Math.abs(tmp) < 1? 0 : tmp;
   return (tmp < 0 ? Math.ceil(tmp) : Math.floor(tmp));
 }
 
-Counter.prototype.calculate=function(id){
-  this.secDiff = Math.round(((new Date()) - this.beginDate)/1000);
+CountUpUnits.prototype.calculate=function(){
+  this.secDiff = Math.round(((new Date()) - this.counterDate)/1000);
   this.seconds = Math.round(this.secDiff);
   this.minutes = this.calculateUnits(60);
   this.hours = this.calculateUnits(3600);
@@ -46,13 +47,16 @@ Counter.prototype.calculate=function(id){
   this.weeks = this.calculateUnits(604800);
   this.months = this.calculateUnits(2629744);
   this.years = this.calculateUnits(31556928);
-  var countainer = document.getElementById(id);
-  countainer.innerHTML ="<strong>" + this.years + "</strong> <small>" + (this.years == 1? "year" : "years") + "</small><br/>" +
+}
+
+CountUpUnits.prototype.updateCounter=function(){
+  this.calculate();
+  this.countainer.innerHTML ="<strong>" + this.years + "</strong> <small>" + (this.years == 1? "year" : "years") + "</small><br/>" +
     "<strong>" + this.months + "</strong> <small>" + (this.months == 1? "month" : "months") + "</small><br/>" +
     "<strong>" + this.days + "</strong> <small>" + (this.days == 1? "day" : "days") + "</small><br/>" +
     "<strong>" + this.hours + "</strong> <small>" + (this.hours == 1? "hour" : "hours") + "</small><br/>" +
     "<strong>" + this.minutes + "</strong> <small>" + (this.minutes == 1? "minute" : "minutes") + "</small><br/>" +
     "<strong>" + this.seconds + "</strong> <small>" + (this.seconds == 1? "second" : "seconds") + "</small><br/>";
   var self = this;
-  setTimeout(function(){self.calculate(id);}, 1000);
+  setTimeout(function(){self.updateCounter();}, 1000);
 }
