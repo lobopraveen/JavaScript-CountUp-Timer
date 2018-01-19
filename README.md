@@ -1,4 +1,4 @@
-# JavaScript-CountUp-Timer
+# JavaScript-Counters
 
 Additional information and alternatives available at https://praveenlobo.com/blog/javascript-countup-timer
 
