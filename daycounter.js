@@ -24,18 +24,18 @@
 **********************************************************************************************/
 
 function DayCounter(initDate, id){
-    this.counterDate = new Date(initDate);
+    this.beginDate = new Date(initDate);
     this.container = document.getElementById(id);
     this.calculate();
 }
 
 DayCounter.prototype.calculate=function(){
-    var secDiff = Math.round(((new Date()) - this.counterDate)/1000);
-    var nextUpdate = (nextUpdate = (secDiff % 86400)) < 0? (nextUpdate*-1) : (86400-nextUpdate);
-    var tmp = Math.abs((tmp = secDiff/86400)) < 1? 0 : tmp;
-    var days = (tmp < 0 ? Math.ceil(tmp) : Math.floor(tmp));
+    var secDiff = Math.round(((new Date()) - this.beginDate)/1000);
+    var nextUpdate = 86400 - (secDiff % 86400);
+    var tmp = (tmp = secDiff/86400) < 1? 0 : Math.floor(tmp);
+    var days = (tmp < 10 ? ("00" + tmp) : tmp < 100 ? ("0" + tmp) : tmp);
     this.container.innerHTML =
-        "<strong>" + days + "</strong> " + (Math.abs(days) == 1? "day" : "days");
+        "<strong>" + days + "</strong> " + (days == 1? "day" : "days");
     var self = this;
     setTimeout(function(){self.calculate();}, (++nextUpdate*1000));
 }
